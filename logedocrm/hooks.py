@@ -4,6 +4,24 @@ app_publisher = "Logedosoft"
 app_description = "Tools to increase efficiency of sales cycle for SMEs"
 app_email = "info@logedosoft.com"
 app_license = "mit"
+
+
+doctype_js = {
+    
+    "Quotation": "public/js/quotation.js"
+ 
+}
+
+doc_events = {
+    "Quotation": {
+        "on_submit": "logedocrm.api.create_quotation_hash"
+    }
+}
+
+
+website_route_rules = [
+    {"from_route": "/logedocrm/<hash>", "to_route": "quotation/index"}
+]
 #Bu Bir Testtir
 # Apps
 # ------------------

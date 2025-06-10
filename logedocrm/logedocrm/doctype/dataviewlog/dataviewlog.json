@@ -1,0 +1,67 @@
+{
+    "actions": [],
+    "allow_rename": 1,
+    "creation": "2025-06-04 11:46:18.518428",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+     "quotation",
+     "hash_value",
+     "viewed_at",
+     "ip_address",
+     "user_agent"
+    ],
+    "fields": [
+     {
+      "fieldname": "quotation",
+      "fieldtype": "Link",
+      "label": "quotation",
+      "options": "Quotation"
+     },
+     {
+      "fieldname": "hash_value",
+      "fieldtype": "Data",
+      "label": "hash_value"
+     },
+     {
+      "default": "now",
+      "fieldname": "viewed_at",
+      "fieldtype": "Datetime",
+      "label": "viewed_at"
+     },
+     {
+      "fieldname": "ip_address",
+      "fieldtype": "Data",
+      "label": "ip_address"
+     },
+     {
+      "fieldname": "user_agent",
+      "fieldtype": "Data",
+      "label": "user_agent"
+     }
+    ],
+    "index_web_pages_for_search": 1,
+    "links": [],
+    "modified": "2025-06-04 11:52:17.400164",
+    "modified_by": "Administrator",
+    "module": "LogedoCRM",
+    "name": "DataViewLog",
+    "owner": "Administrator",
+    "permissions": [
+     {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "System Manager",
+      "share": 1,
+      "write": 1
+     }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": []
+   }
