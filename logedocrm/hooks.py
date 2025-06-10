@@ -4,7 +4,7 @@ app_publisher = "Logedosoft"
 app_description = "Tools to increase efficiency of sales cycle for SMEs"
 app_email = "info@logedosoft.com"
 app_license = "mit"
-
+#Bu Bir Testtir
 # Apps
 # ------------------
 
