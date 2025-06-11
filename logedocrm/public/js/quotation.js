@@ -1,3 +1,20 @@
+// Basit clipboard kopyalama fonksiyonu
+function copyToClipboard(text) {
+    // Modern tarayıcılar için
+    if (navigator.clipboard) {
+        return navigator.clipboard.writeText(text);
+    }
+    
+    // Eski tarayıcılar için fallback
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    return Promise.resolve();
+}
+
 frappe.ui.form.on('Quotation', {
     refresh: function(frm) {
         if (frm.doc.docstatus === 1) {
@@ -9,11 +26,23 @@ frappe.ui.form.on('Quotation', {
                     },
                     callback: function(r) {
                         if (r.message && r.message.url) {
-                            navigator.clipboard.writeText(r.message.url);
-                            frappe.show_alert({
-                                message: 'Link copied to clipboard!',
-                                indicator: 'green'
-                            });
+                            copyToClipboard(r.message.url)
+                                .then(function() {
+                                    frappe.show_alert({
+                                        message: __('Link copied to clipboard!'),
+                                        indicator: 'green'
+                                    });
+                                })
+                                .catch(function() {
+                                    // Kopyalama başarısız - basit prompt göster
+                                    frappe.prompt({
+                                        label: __('Share Link'),
+                                        fieldname: 'url',
+                                        fieldtype: 'Data',
+                                        default: r.message.url,
+                                        read_only: 1
+                                    }, function() {}, __('Copy this link manually'));
+                                });
                         }
                     }
                 });

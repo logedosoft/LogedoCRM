@@ -1,3 +1,4 @@
+
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: MIT. See LICENSE
 
@@ -7,6 +8,9 @@ from frappe.utils import get_url, now_datetime, generate_hash
 from frappe.www.printview import get_rendered_template, get_print_format_doc, get_print_style
 import hashlib
 import time
+
+# Guest erişimi için gerekli
+no_cache = 1
 
 def get_context(context):
     """
@@ -29,6 +33,9 @@ def get_context(context):
         frappe.throw(_("Invalid or expired link"), frappe.PermissionError)
     
     try:
+        # Guest erişimi için permission kontrolünü bypass et
+        frappe.set_user("Administrator")
+        
         # Get quotation data
         quotation = frappe.get_doc("Quotation", quotation_name)
         
@@ -43,7 +50,8 @@ def get_context(context):
         meta = frappe.get_meta("Quotation")
         print_format = get_print_format_doc(None, meta=meta)
         
-        # Get rendered body using Frappe's method
+        # Get rendered body using Frappe's method - ignore permissions
+        frappe.flags.ignore_permissions = True
         body = get_rendered_template(
             quotation,
             print_format=print_format,
@@ -56,6 +64,9 @@ def get_context(context):
         
         # Get print style
         print_style = get_print_style(None, print_format)
+        
+        # Reset user back to Guest
+        frappe.set_user("Guest")
 
         # Prepare context for template
         context.update({
@@ -76,8 +87,10 @@ def get_context(context):
         })
         
     except frappe.DoesNotExistError:
+        frappe.set_user("Guest")  # Reset user on error
         frappe.throw(_("Quotation not found"), frappe.DoesNotExistError)
     except Exception as e:
+        frappe.set_user("Guest")  # Reset user on error
         frappe.log_error(f"Error in quotation web view: {str(e)}")
         frappe.throw(_("An error occurred while loading the quotation"))
 
@@ -154,3 +167,8 @@ def log_quotation_view(quotation, logedo_hash):
         frappe.db.commit()
     except Exception:
         frappe.log_error(frappe.get_traceback(), "❌ DataViewLog insert error")
+
+# Guest access için gerekli permission fonksiyonu
+def has_website_permission(doc, ptype, user, verbose=False):
+    """Web sayfası için guest erişim izni"""
+    return True

@@ -22,6 +22,12 @@ doc_events = {
 website_route_rules = [
     {"from_route": "/logedocrm/<hash>", "to_route": "quotation/index"}
 ]
+# Website Route Overrides - Guest erişimi için
+
+# Guest erişimi izinleri
+website_context = {
+    "no_cache": 1
+}
 #Bu Bir Testtir
 # Apps
 # ------------------

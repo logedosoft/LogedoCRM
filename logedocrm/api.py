@@ -63,7 +63,7 @@ def download_quotation_pdf_by_hash():
             frappe.throw(_("Quotation not found or not submitted"))
         
         # Generate PDF using the web template for full page view
-        html = frappe.render_template("route/www/quotation/index.html", {
+        html = frappe.render_template("logedocrm/www/quotation/index.html", {
             "quotation": quotation,
             "company": frappe.get_doc("Company", quotation.company),
             "items": quotation.items,
@@ -118,13 +118,13 @@ def get_quotation_share_link(quotation_name):
         frappe.throw(_("Permission Denied"))
     
     # Import the function from web route
-    from route.www.quotation.index import generate_quotation_link
+    from logedocrm.www.quotation.index import generate_quotation_link
     return generate_quotation_link(quotation_name)
 
 def create_quotation_hash(doc, method):
     """Create hash when quotation is submitted"""
     if not doc.get("custom_logedo_crm_hash"):
-        from route.www.quotation.index import generate_logedo_hash
+        from logedocrm.www.quotation.index import generate_logedo_hash
         generate_logedo_hash(doc.name)
 
 # Backward compatibility
